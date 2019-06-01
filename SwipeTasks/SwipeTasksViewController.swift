@@ -11,13 +11,21 @@ class SwipeTasksViewController: UITableViewController {
     //Item array.
     var itemArray = ["XXXXXABC", "XXXXXABC","XXXXXABC","XXXXXABC","XXXXXABC","XXXXXABC", "XXXXXABC"]
     
+    ////UserDefaults 'File Path'-1
+    //Set defaults object equal to UserDefaults.standard.(an interface to the user’s defaults database, where you store key-value pairs persistently across launches of your app.)
+    let defaults = UserDefaults.standard
+    
     
     
 //MARK: - VIEW DID LOAD BLOCK.
 ////---------------------------------------------------------------------------------------------------------------------------
-    
-   override func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
+        
+        ////UserDefaults 'Retrieve Data'-3
+        if let items = defaults.array(forKey: "SwipeTasksItemArray") as? [String] {
+            itemArray = items
+        }
     }
     
 
@@ -29,7 +37,6 @@ class SwipeTasksViewController: UITableViewController {
     
 //MARK: - TABLE VIEW DATA SOURCE METHODS.
  ////---------------------------------------------------------------------------------------------------------------------------
-   
     //Override table view function and tells the data source to return the number of rows in a given section of a table view.
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         //Return total number of elements in the item array.
@@ -50,10 +57,8 @@ class SwipeTasksViewController: UITableViewController {
     
 //MARK: - TABLE VIEW DELEGATE METHODS.
  ////---------------------------------------------------------------------------------------------------------------------------
-  
     //Override table view function and tells the delegate that the specified row is now selected.
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //print(itemArray[indexPath.row])
         
         //Create a checkmark function using conditional methods.
         if tableView.cellForRow(at: indexPath)?.accessoryType == .checkmark {
@@ -71,10 +76,8 @@ class SwipeTasksViewController: UITableViewController {
     
     
     
-    
+//MARK: - ADD ITEM BUTTON FUNCTION BLOCK.
 ////---------------------------------------------------------------------------------------------------------------------------
-
-    //MARK: - ADD ITEM BUTTON FUNCTION BLOCK.
     @IBAction func addItemButton(_ sender: UIBarButtonItem) {
         //Set text field object equal to UI Text Field.
         var textField = UITextField( )
@@ -85,6 +88,11 @@ class SwipeTasksViewController: UITableViewController {
             /////////////////////▷Completion Block
             //Adds a new element at the end of the item array.
             self.itemArray.append(textField.text!)
+            
+            ////UserDefaults'Save'-2
+            //Sets the value of the specified default key.
+            self.defaults.set(self.itemArray, forKey: "SwipeTasksItemArray")
+            
             //Call table view reload data.
             self.tableView.reloadData()
         }
@@ -98,5 +106,5 @@ class SwipeTasksViewController: UITableViewController {
         //Presents a view controller modally.
         present(alert, animated: true, completion: nil)
         }
-}
+    }
 
