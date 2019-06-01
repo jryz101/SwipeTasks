@@ -9,18 +9,27 @@ import UIKit
 class SwipeTasksViewController: UITableViewController {
     
     //Item array.
-    let itemArray = ["XXXXXABC", "XXXXXABC","XXXXXABC","XXXXXABC","XXXXXABC","XXXXXABC", "XXXXXABC"]
+    var itemArray = ["XXXXXABC", "XXXXXABC","XXXXXABC","XXXXXABC","XXXXXABC","XXXXXABC", "XXXXXABC"]
     
-     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //MARK: - VIEW DID LOAD BLOCK.
-    //----------------------------------------
-    override func viewDidLoad() {
+    
+    
+//MARK: - VIEW DID LOAD BLOCK.
+////---------------------------------------------------------------------------------------------------------------------------
+    
+   override func viewDidLoad() {
         super.viewDidLoad()
     }
     
-   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //MARK: - TABLE VIEW DATA SOURCE METHODS.
-    //----------------------------------------------------------
+
+
+    
+    
+    
+    
+    
+//MARK: - TABLE VIEW DATA SOURCE METHODS.
+ ////---------------------------------------------------------------------------------------------------------------------------
+   
     //Override table view function and tells the data source to return the number of rows in a given section of a table view.
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         //Return total number of elements in the item array.
@@ -35,9 +44,13 @@ class SwipeTasksViewController: UITableViewController {
         //Return cell.
         return cell
     }
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //MARK: - TABLE VIEW DELEGATE METHODS.
-    //------------------------------------------------------
+
+    
+    
+    
+//MARK: - TABLE VIEW DELEGATE METHODS.
+ ////---------------------------------------------------------------------------------------------------------------------------
+  
     //Override table view function and tells the delegate that the specified row is now selected.
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //print(itemArray[indexPath.row])
@@ -50,6 +63,40 @@ class SwipeTasksViewController: UITableViewController {
         }
         //Table viewl deselects a given row identified by index path, with an option to animate the deselection.
         tableView.deselectRow(at: indexPath, animated: true)
-        }
     }
+    
+    
+    
+    
+    
+    
+    
+    
+////---------------------------------------------------------------------------------------------------------------------------
+
+    //MARK: - ADD ITEM BUTTON FUNCTION BLOCK.
+    @IBAction func addItemButton(_ sender: UIBarButtonItem) {
+        //Set text field object equal to UI Text Field.
+        var textField = UITextField( )
+        //Add an object that displays an alert message to the user.
+        let alert = UIAlertController(title: "Add New Takss", message: "", preferredStyle: .alert)
+        //Add an action that can be taken when the user taps a button in an alert.
+        let action = UIAlertAction(title: "Add Task", style: .default) { (action) in
+            /////////////////////▷Completion Block
+            //Adds a new element at the end of the item array.
+            self.itemArray.append(textField.text!)
+            //Call table view reload data.
+            self.tableView.reloadData()
+        }
+        //Adds a text field to an alert.
+        alert.addTextField { (alerttextField) in
+            alerttextField.placeholder = "Create New Task"
+            textField = alerttextField
+        }
+        //Attaches an action object to the alert or action sheet.
+        alert.addAction(action)
+        //Presents a view controller modally.
+        present(alert, animated: true, completion: nil)
+        }
+}
 
