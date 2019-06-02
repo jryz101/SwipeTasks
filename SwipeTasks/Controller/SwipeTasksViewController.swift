@@ -9,7 +9,7 @@ import UIKit
 class SwipeTasksViewController: UITableViewController {
     
     //Item array.
-    var itemArray = ["XXXXXABC", "XXXXXABC","XXXXXABC","XXXXXABC","XXXXXABC","XXXXXABC", "XXXXXABC"]
+    var itemArray = [Item]( )
     
     ////UserDefaults 'File Path'-1
     //Set defaults object equal to UserDefaults.standard.(an interface to the user’s defaults database, where you store key-value pairs persistently across launches of your app.)
@@ -22,8 +22,23 @@ class SwipeTasksViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //Create custom Item object and initialize it.
+        let newItem = Item( )
+        newItem.title = "XDATA"
+        itemArray.append(newItem)
+        
+        let newItem2 = Item( )
+        newItem2.title = "XDATA"
+        itemArray.append(newItem2)
+        
+        let newItem3 = Item( )
+        newItem3.title = "XDATA"
+        itemArray.append(newItem3)
+        
+        
+        
         ////UserDefaults 'Retrieve Data'-3
-        if let items = defaults.array(forKey: "SwipeTasksItemArray") as? [String] {
+        if let items = defaults.array(forKey: "SwipeTasksItemArray") as? [Item] {
             itemArray = items
         }
     }
@@ -46,8 +61,17 @@ class SwipeTasksViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         //Returns a reusable table-view cell object for the specified reuse identifier and adds it to the table.
         let cell = tableView.dequeueReusableCell(withIdentifier: "SwipeTasksItemCell", for: indexPath)
-        //Set cell text label equal to item array index path .row.
-        cell.textLabel?.text = itemArray[indexPath.row]
+        
+        //Set item object equal to item array index path .row.
+        let item = itemArray[indexPath.row]
+        
+        //Set cell text label equal to item array index path .row .title.
+        cell.textLabel?.text = item.title
+        
+        ////⭐️Ternary Operator
+        //Format: value = condition ? valueIfTrue : valueIfFalse
+        cell.accessoryType = item.doneProperty == true ? .checkmark : .none
+        
         //Return cell.
         return cell
     }
@@ -60,12 +84,12 @@ class SwipeTasksViewController: UITableViewController {
     //Override table view function and tells the delegate that the specified row is now selected.
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        //Create a checkmark function using conditional methods.
-        if tableView.cellForRow(at: indexPath)?.accessoryType == .checkmark {
-            tableView.cellForRow(at: indexPath)?.accessoryType = .none
-        }else{
-            tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
-        }
+        //Set item array index path .row .done property to the opposite value.
+        itemArray[indexPath.row].doneProperty = !itemArray[indexPath.row].doneProperty
+        
+        //Call table view reload data.
+        tableView.reloadData()
+        
         //Table viewl deselects a given row identified by index path, with an option to animate the deselection.
         tableView.deselectRow(at: indexPath, animated: true)
     }
@@ -86,8 +110,12 @@ class SwipeTasksViewController: UITableViewController {
         //Add an action that can be taken when the user taps a button in an alert.
         let action = UIAlertAction(title: "Add Task", style: .default) { (action) in
             /////////////////////▷Completion Block
+            
+            let newItem = Item( )
+            newItem.title = textField.text!
+            
             //Adds a new element at the end of the item array.
-            self.itemArray.append(textField.text!)
+            self.itemArray.append(newItem)
             
             ////UserDefaults'Save'-2
             //Sets the value of the specified default key.

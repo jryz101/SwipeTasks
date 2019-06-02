@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8A5E105822A43C0500066D3C /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5E105722A43C0500066D3C /* Item.swift */; };
 		8AC70C4822A1C95D0031D3FC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC70C4722A1C95D0031D3FC /* AppDelegate.swift */; };
 		8AC70C4A22A1C95D0031D3FC /* SwipeTasksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC70C4922A1C95D0031D3FC /* SwipeTasksViewController.swift */; };
 		8AC70C4D22A1C95D0031D3FC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8AC70C4B22A1C95D0031D3FC /* Main.storyboard */; };
@@ -15,6 +16,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8A5E105722A43C0500066D3C /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		8AC70C4422A1C95D0031D3FC /* SwipeTasks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwipeTasks.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8AC70C4722A1C95D0031D3FC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8AC70C4922A1C95D0031D3FC /* SwipeTasksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeTasksViewController.swift; sourceTree = "<group>"; };
@@ -35,6 +37,39 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8A5E105922A43C0A00066D3C /* Data Model */ = {
+			isa = PBXGroup;
+			children = (
+				8A5E105722A43C0500066D3C /* Item.swift */,
+			);
+			path = "Data Model";
+			sourceTree = "<group>";
+		};
+		8A5E105A22A43C1600066D3C /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				8AC70C4922A1C95D0031D3FC /* SwipeTasksViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		8A5E105B22A43C5300066D3C /* View */ = {
+			isa = PBXGroup;
+			children = (
+				8AC70C4B22A1C95D0031D3FC /* Main.storyboard */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		8A5E105C22A43C5E00066D3C /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				8AC70C4E22A1C95E0031D3FC /* Assets.xcassets */,
+				8AC70C5022A1C95E0031D3FC /* LaunchScreen.storyboard */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		8AC70C3B22A1C95D0031D3FC = {
 			isa = PBXGroup;
 			children = (
@@ -55,10 +90,10 @@
 			isa = PBXGroup;
 			children = (
 				8AC70C4722A1C95D0031D3FC /* AppDelegate.swift */,
-				8AC70C4922A1C95D0031D3FC /* SwipeTasksViewController.swift */,
-				8AC70C4B22A1C95D0031D3FC /* Main.storyboard */,
-				8AC70C4E22A1C95E0031D3FC /* Assets.xcassets */,
-				8AC70C5022A1C95E0031D3FC /* LaunchScreen.storyboard */,
+				8A5E105A22A43C1600066D3C /* Controller */,
+				8A5E105922A43C0A00066D3C /* Data Model */,
+				8A5E105B22A43C5300066D3C /* View */,
+				8A5E105C22A43C5E00066D3C /* Supporting Files */,
 				8AC70C5322A1C95E0031D3FC /* Info.plist */,
 			);
 			path = SwipeTasks;
@@ -136,6 +171,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8AC70C4A22A1C95D0031D3FC /* SwipeTasksViewController.swift in Sources */,
+				8A5E105822A43C0500066D3C /* Item.swift in Sources */,
 				8AC70C4822A1C95D0031D3FC /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
