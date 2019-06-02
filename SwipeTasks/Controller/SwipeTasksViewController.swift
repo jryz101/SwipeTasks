@@ -25,23 +25,8 @@ class SwipeTasksViewController: UITableViewController {
         
         print(dataFilePath!)
         
-        //Create custom Item object and initialize it.
-        let newItem = Item( )
-        newItem.title = "XDATA"
-        itemArray.append(newItem)
-        
-        let newItem2 = Item( )
-        newItem2.title = "XDATA"
-        itemArray.append(newItem2)
-        
-        let newItem3 = Item( )
-        newItem3.title = "XDATA"
-        itemArray.append(newItem3)
-        
-        ////UserDefaults 'Retrieve Data'-3
-//        if let items = defaults.array(forKey: "SwipeTasksItemArray") as? [Item] {
-//            itemArray = items
-//        }
+        //Call load items function.
+        loadItems()
     }
     
 
@@ -155,6 +140,19 @@ class SwipeTasksViewController: UITableViewController {
         //Call table view reload data.
         tableView.reloadData()
         }
+    
+    func loadItems ( ) {
+         ////NSCODER-Decoder Methods.
+        //Optional binding methods to open a byte buffer in memory.
+        if let data = try? Data(contentsOf: dataFilePath!)  {
+            //Set decoder property equal to property list decoder and initialize it.
+            let decoder = PropertyListDecoder( )
+            //Do-Catch methods for decode the item array from data file path.
+            do {
+                itemArray = try decoder.decode([Item].self, from: data)
+            }catch {
+                print("ERROR DECODING ITEM ARRAY, \(error)")
+            }
+        }
     }
-
-
+}
