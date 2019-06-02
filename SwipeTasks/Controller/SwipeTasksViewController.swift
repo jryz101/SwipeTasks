@@ -11,16 +11,19 @@ class SwipeTasksViewController: UITableViewController {
     //Item array.
     var itemArray = [Item]( )
     
-    ////UserDefaults 'File Path'-1
-    //Set defaults object equal to UserDefaults.standard.(an interface to the user’s defaults database, where you store key-value pairs persistently across launches of your app.)
-    let defaults = UserDefaults.standard
+    ////NSCODER-File Path.
+    //An object that provides a convenient interface to the contents of the file system.
+    let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Item.plist")
     
+   
     
     
 //MARK: - VIEW DID LOAD BLOCK.
 ////---------------------------------------------------------------------------------------------------------------------------
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        print(dataFilePath!)
         
         //Create custom Item object and initialize it.
         let newItem = Item( )
@@ -35,12 +38,10 @@ class SwipeTasksViewController: UITableViewController {
         newItem3.title = "XDATA"
         itemArray.append(newItem3)
         
-        
-        
         ////UserDefaults 'Retrieve Data'-3
-        if let items = defaults.array(forKey: "SwipeTasksItemArray") as? [Item] {
-            itemArray = items
-        }
+//        if let items = defaults.array(forKey: "SwipeTasksItemArray") as? [Item] {
+//            itemArray = items
+//        }
     }
     
 
@@ -51,7 +52,7 @@ class SwipeTasksViewController: UITableViewController {
     
     
 //MARK: - TABLE VIEW DATA SOURCE METHODS.
- ////---------------------------------------------------------------------------------------------------------------------------
+////---------------------------------------------------------------------------------------------------------------------------
     //Override table view function and tells the data source to return the number of rows in a given section of a table view.
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         //Return total number of elements in the item array.
@@ -80,15 +81,15 @@ class SwipeTasksViewController: UITableViewController {
     
     
 //MARK: - TABLE VIEW DELEGATE METHODS.
- ////---------------------------------------------------------------------------------------------------------------------------
+////---------------------------------------------------------------------------------------------------------------------------
     //Override table view function and tells the delegate that the specified row is now selected.
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         //Set item array index path .row .done property to the opposite value.
         itemArray[indexPath.row].doneProperty = !itemArray[indexPath.row].doneProperty
         
-        //Call table view reload data.
-        tableView.reloadData()
+        //Call save item function.
+        saveItems()
         
         //Table viewl deselects a given row identified by index path, with an option to animate the deselection.
         tableView.deselectRow(at: indexPath, animated: true)
@@ -111,18 +112,16 @@ class SwipeTasksViewController: UITableViewController {
         let action = UIAlertAction(title: "Add Task", style: .default) { (action) in
             /////////////////////▷Completion Block
             
+            //Set new item object equal to custom item class and initialize it.
             let newItem = Item( )
+            //Set new item .title property equal to text field .text.
             newItem.title = textField.text!
+            
             
             //Adds a new element at the end of the item array.
             self.itemArray.append(newItem)
-            
-            ////UserDefaults'Save'-2
-            //Sets the value of the specified default key.
-            self.defaults.set(self.itemArray, forKey: "SwipeTasksItemArray")
-            
-            //Call table view reload data.
-            self.tableView.reloadData()
+            //Call save item function.
+            self.saveItems()
         }
         //Adds a text field to an alert.
         alert.addTextField { (alerttextField) in
@@ -133,6 +132,29 @@ class SwipeTasksViewController: UITableViewController {
         alert.addAction(action)
         //Presents a view controller modally.
         present(alert, animated: true, completion: nil)
+    }
+    
+    
+    
+    
+    
+    
+//MARK: - FUNCTION BLOCK.
+////---------------------------------------------------------------------------------------------------------------------------
+    func saveItems ( ) {
+        ////NSCODER-Encoder Methods.
+        //Set encoder object euqal to property list encoder and initialize it.
+        let encoder = PropertyListEncoder( )
+        //Do-Catch methods for encode and write item array data to data file path.
+        do {
+            let data = try encoder.encode(itemArray)
+            try data.write(to: dataFilePath!)
+        } catch {
+            print("ERROR ENCODING ITEM ARRAY!")
+        }
+        //Call table view reload data.
+        tableView.reloadData()
         }
     }
+
 
