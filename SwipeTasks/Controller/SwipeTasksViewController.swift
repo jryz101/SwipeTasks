@@ -5,15 +5,19 @@
 
 
 import UIKit
+import CoreData
 
 class SwipeTasksViewController: UITableViewController {
     
     //Item array.
     var itemArray = [Item]( )
     
-    ////NSCODER-File Path.
-    //An object that provides a convenient interface to the contents of the file system.
+   //An object that provides a convenient interface to the contents of the file system.
     let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Item.plist")
+    
+    ////CoreData-Context.
+    //Down cast uiApplication delegate to app delegate and tap into core data persisten container . view context.
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
    
     
@@ -27,6 +31,7 @@ class SwipeTasksViewController: UITableViewController {
         
         //Call load items function.
         loadItems()
+        
     }
     
 
@@ -56,7 +61,7 @@ class SwipeTasksViewController: UITableViewController {
         
         ////⭐️Ternary Operator
         //Format: value = condition ? valueIfTrue : valueIfFalse
-        cell.accessoryType = item.doneProperty == true ? .checkmark : .none
+        cell.accessoryType = item.done == true ? .checkmark : .none
         
         //Return cell.
         return cell
@@ -71,7 +76,7 @@ class SwipeTasksViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         //Set item array index path .row .done property to the opposite value.
-        itemArray[indexPath.row].doneProperty = !itemArray[indexPath.row].doneProperty
+        itemArray[indexPath.row].done = !itemArray[indexPath.row].done
         
         //Call save item function.
         saveItems()
@@ -97,11 +102,13 @@ class SwipeTasksViewController: UITableViewController {
         let action = UIAlertAction(title: "Add Task", style: .default) { (action) in
             /////////////////////▷Completion Block
             
-            //Set new item object equal to custom item class and initialize it.
-            let newItem = Item( )
+            //Set new item object equal to custom item class context.
+            let newItem = Item(context: self.context)
             //Set new item .title property equal to text field .text.
             newItem.title = textField.text!
             
+            //Set new item property equal to false.
+            newItem.done = false
             
             //Adds a new element at the end of the item array.
             self.itemArray.append(newItem)
@@ -117,7 +124,7 @@ class SwipeTasksViewController: UITableViewController {
         alert.addAction(action)
         //Presents a view controller modally.
         present(alert, animated: true, completion: nil)
-    }
+        }
     
     
     
@@ -127,32 +134,25 @@ class SwipeTasksViewController: UITableViewController {
 //MARK: - FUNCTION BLOCK.
 ////---------------------------------------------------------------------------------------------------------------------------
     func saveItems ( ) {
-        ////NSCODER-Encoder Methods.
-        //Set encoder object euqal to property list encoder and initialize it.
-        let encoder = PropertyListEncoder( )
-        //Do-Catch methods for encode and write item array data to data file path.
+        ////CoreData-Context-CRUD-Create Methods.
         do {
-            let data = try encoder.encode(itemArray)
-            try data.write(to: dataFilePath!)
+           try context.save()
         } catch {
-            print("ERROR ENCODING ITEM ARRAY!")
+           print("ERROR SAVING CONTEXT, \(error)")
         }
         //Call table view reload data.
         tableView.reloadData()
         }
     
+    
     func loadItems ( ) {
-         ////NSCODER-Decoder Methods.
-        //Optional binding methods to open a byte buffer in memory.
-        if let data = try? Data(contentsOf: dataFilePath!)  {
-            //Set decoder property equal to property list decoder and initialize it.
-            let decoder = PropertyListDecoder( )
-            //Do-Catch methods for decode the item array from data file path.
-            do {
-                itemArray = try decoder.decode([Item].self, from: data)
-            }catch {
-                print("ERROR DECODING ITEM ARRAY, \(error)")
-            }
+        //A description of search criteria used to retrieve data from a persistent store.
+        let request : NSFetchRequest<Item> = Item.fetchRequest()
+        ////CoreData-Context-CRUD-Read Methods.
+        do {
+          itemArray =  try context.fetch(request)
+        } catch {
+            print("ERROR FETCHING DATA FROM CONTEXT, \(error)")
         }
     }
 }
