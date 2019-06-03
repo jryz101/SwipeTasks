@@ -75,9 +75,13 @@ class SwipeTasksViewController: UITableViewController {
     //Override table view function and tells the delegate that the specified row is now selected.
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        ////CoreData-Context-CRUD-Delete Methods.
+        //context.delete(itemArray[indexPath.row])
+        //itemArray.remove(at: indexPath.row)
+        
+        ////CoreData-Context-CRUD-Update Methods.
         //Set item array index path .row .done property to the opposite value.
         itemArray[indexPath.row].done = !itemArray[indexPath.row].done
-        
         //Call save item function.
         saveItems()
         
