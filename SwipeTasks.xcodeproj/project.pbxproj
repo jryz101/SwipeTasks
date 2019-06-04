@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8A3C85C122A5E5E700D624DA /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3C85C022A5E5E700D624DA /* CategoryViewController.swift */; };
 		8AC70C4822A1C95D0031D3FC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC70C4722A1C95D0031D3FC /* AppDelegate.swift */; };
 		8AC70C4A22A1C95D0031D3FC /* SwipeTasksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC70C4922A1C95D0031D3FC /* SwipeTasksViewController.swift */; };
 		8AC70C4D22A1C95D0031D3FC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8AC70C4B22A1C95D0031D3FC /* Main.storyboard */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8A3C85C022A5E5E700D624DA /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
 		8AC70C4422A1C95D0031D3FC /* SwipeTasks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwipeTasks.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8AC70C4722A1C95D0031D3FC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8AC70C4922A1C95D0031D3FC /* SwipeTasksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeTasksViewController.swift; sourceTree = "<group>"; };
@@ -48,6 +50,7 @@
 		8A5E105A22A43C1600066D3C /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				8A3C85C022A5E5E700D624DA /* CategoryViewController.swift */,
 				8AC70C4922A1C95D0031D3FC /* SwipeTasksViewController.swift */,
 			);
 			path = Controller;
@@ -170,6 +173,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8A3C85C122A5E5E700D624DA /* CategoryViewController.swift in Sources */,
 				8AC70C4A22A1C95D0031D3FC /* SwipeTasksViewController.swift in Sources */,
 				8AFC029422A48D910038BAA9 /* DataModel.xcdatamodeld in Sources */,
 				8AC70C4822A1C95D0031D3FC /* AppDelegate.swift in Sources */,

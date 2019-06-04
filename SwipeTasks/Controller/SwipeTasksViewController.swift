@@ -30,7 +30,7 @@ class SwipeTasksViewController: UITableViewController {
         print(dataFilePath!)
         
         //Call load items function.
-        loadItems()
+        loadItems( )
         
     }
     
@@ -149,14 +149,44 @@ class SwipeTasksViewController: UITableViewController {
         }
     
     
-    func loadItems ( ) {
-        //A description of search criteria used to retrieve data from a persistent store.
-        let request : NSFetchRequest<Item> = Item.fetchRequest()
+    func loadItems (with request: NSFetchRequest<Item> = Item.fetchRequest( ) ) {
         ////CoreData-Context-CRUD-Read Methods.
         do {
           itemArray =  try context.fetch(request)
         } catch {
             print("ERROR FETCHING DATA FROM CONTEXT, \(error)")
+            }
+        tableView.reloadData()
+            }
+    }
+
+
+
+
+    
+//MARK: - EXTENSION BLOCK WITH SEARCH BAR METHODS.
+////---------------------------------------------------------------------------------------------------------------------------
+extension SwipeTasksViewController: UISearchBarDelegate {
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        
+        let request: NSFetchRequest<Item> = Item.fetchRequest( )
+        
+        request.predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
+        
+        request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
+        
+        loadItems(with: request)
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchBar.text?.count == 0 {
+            loadItems()
+            
+            DispatchQueue.main.async {
+                searchBar.resignFirstResponder()
+            }
         }
     }
 }
+
