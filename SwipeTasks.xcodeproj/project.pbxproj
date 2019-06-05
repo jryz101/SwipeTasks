@@ -7,19 +7,22 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8A0038C122A7C5360053C1B7 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0038C022A7C5360053C1B7 /* Item.swift */; };
+		8A0038C322A7C5430053C1B7 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0038C222A7C5430053C1B7 /* Category.swift */; };
 		8A3C85C122A5E5E700D624DA /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3C85C022A5E5E700D624DA /* CategoryViewController.swift */; };
 		8AC70C4822A1C95D0031D3FC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC70C4722A1C95D0031D3FC /* AppDelegate.swift */; };
 		8AC70C4A22A1C95D0031D3FC /* SwipeTasksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC70C4922A1C95D0031D3FC /* SwipeTasksViewController.swift */; };
 		8AC70C4D22A1C95D0031D3FC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8AC70C4B22A1C95D0031D3FC /* Main.storyboard */; };
 		8AC70C4F22A1C95E0031D3FC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8AC70C4E22A1C95E0031D3FC /* Assets.xcassets */; };
 		8AC70C5222A1C95E0031D3FC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8AC70C5022A1C95E0031D3FC /* LaunchScreen.storyboard */; };
-		8AFC029422A48D910038BAA9 /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8AFC029222A48D910038BAA9 /* DataModel.xcdatamodeld */; };
 		FD382947C22E18FBE429E46B /* Pods_SwipeTasks.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B9040A9C70FE4547FADEF9B /* Pods_SwipeTasks.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		23F553E431E89A6AA490E23F /* Pods-SwipeTasks.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwipeTasks.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SwipeTasks/Pods-SwipeTasks.debug.xcconfig"; sourceTree = "<group>"; };
 		40899B53732FE5C8470202A1 /* Pods-SwipeTasks.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwipeTasks.release.xcconfig"; path = "Pods/Target Support Files/Pods-SwipeTasks/Pods-SwipeTasks.release.xcconfig"; sourceTree = "<group>"; };
+		8A0038C022A7C5360053C1B7 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
+		8A0038C222A7C5430053C1B7 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		8A3C85C022A5E5E700D624DA /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
 		8AC70C4422A1C95D0031D3FC /* SwipeTasks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwipeTasks.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8AC70C4722A1C95D0031D3FC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -28,7 +31,6 @@
 		8AC70C4E22A1C95E0031D3FC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8AC70C5122A1C95E0031D3FC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8AC70C5322A1C95E0031D3FC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		8AFC029322A48D910038BAA9 /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
 		9B9040A9C70FE4547FADEF9B /* Pods_SwipeTasks.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwipeTasks.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -55,7 +57,8 @@
 		8A5E105922A43C0A00066D3C /* Data Model */ = {
 			isa = PBXGroup;
 			children = (
-				8AFC029222A48D910038BAA9 /* DataModel.xcdatamodeld */,
+				8A0038C222A7C5430053C1B7 /* Category.swift */,
+				8A0038C022A7C5360053C1B7 /* Item.swift */,
 			);
 			path = "Data Model";
 			sourceTree = "<group>";
@@ -248,10 +251,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8A0038C122A7C5360053C1B7 /* Item.swift in Sources */,
 				8A3C85C122A5E5E700D624DA /* CategoryViewController.swift in Sources */,
 				8AC70C4A22A1C95D0031D3FC /* SwipeTasksViewController.swift in Sources */,
-				8AFC029422A48D910038BAA9 /* DataModel.xcdatamodeld in Sources */,
 				8AC70C4822A1C95D0031D3FC /* AppDelegate.swift in Sources */,
+				8A0038C322A7C5430053C1B7 /* Category.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -453,19 +457,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCVersionGroup section */
-		8AFC029222A48D910038BAA9 /* DataModel.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				8AFC029322A48D910038BAA9 /* DataModel.xcdatamodel */,
-			);
-			currentVersion = 8AFC029322A48D910038BAA9 /* DataModel.xcdatamodel */;
-			path = DataModel.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = 8AC70C3C22A1C95D0031D3FC /* Project object */;
 }

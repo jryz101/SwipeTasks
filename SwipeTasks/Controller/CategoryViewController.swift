@@ -5,9 +5,13 @@
 
 
 import UIKit
-import CoreData
+import RealmSwift
 
 class CategoryViewController: UITableViewController {
+    
+    ////Create Realm Database.
+    //A Realm instance (also referred to as “a Realm”) represents a Realm database.
+    let realm = try! Realm( )
     
     //Set categories object equals to Category and initialize it.
     var categories = [Category]( )
@@ -61,10 +65,15 @@ class CategoryViewController: UITableViewController {
     
 //MARK: - FUNCTION BLOCK.
 ////---------------------------------------------------------------------------------------------------------------------------
-    func saveCategories ( ) {
+    func save(category: Category ) {
         do {
-            try context.save( )
-        }catch {
+            ////Realm-CRUD-Create
+            //Performs actions contained within the given block inside a write transaction.
+            try realm.write {
+                //Adds an unmanaged object to this Realm.
+                realm.add(category)
+            }
+        } catch {
             print("ERROR SAVING CATEGORY, \(error)")
         }
         tableView.reloadData()
@@ -72,13 +81,13 @@ class CategoryViewController: UITableViewController {
     
     func loadCategories ( ) {
         
-        let request : NSFetchRequest<Category> = Category.fetchRequest( )
-        do {
-       categories = try context.fetch(request)
-        } catch {
-            print("ERROR LOADING CATEGORIES, \(error)")
-        }
-        tableView.reloadData()
+//        let request : NSFetchRequest<Category> = Category.fetchRequest( )
+//        do {
+//       categories = try context.fetch(request)
+//        } catch {
+//            print("ERROR LOADING CATEGORIES, \(error)")
+//        }
+//        tableView.reloadData()-------------------------------------------------------------------------####Address it.
     }
 
 
@@ -97,12 +106,12 @@ class CategoryViewController: UITableViewController {
         let action = UIAlertAction(title: "Add", style: .default) { (action) in
             
             /////////////////////▷Completion Block
-            let newCategory = Category(context: self.context)
+            let newCategory = Category( )
             newCategory.name = textField.text!
             
             self.categories.append(newCategory)
             
-            self.saveCategories()
+            self.save(category: newCategory)
         }
         alert.addAction(action)
         

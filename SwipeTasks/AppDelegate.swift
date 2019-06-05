@@ -16,8 +16,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     //Tells the delegate that the launch process is almost done and the app is almost ready to run.
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
+        print(Realm.Configuration.defaultConfiguration.fileURL!)
+        
+        //Do-Catch-Methods for initialising Realm.
+        do {
+            let realm = try Realm( )
+        } catch {
+            print("ERROR INITIALISING REALM, \(error)")
+        }
         return true
         }
+    
+    
+    
+    
+    
     
     //Tells the delegate when the app is about to terminate.
     func applicationWillTerminate(_ application: UIApplication) {

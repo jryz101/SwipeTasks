@@ -14,7 +14,7 @@ class SwipeTasksViewController: UITableViewController {
     
     var selectedCategory : Category? {
         didSet {
-            loadItems()
+        //loadItems()-------------------###Address it.
         }
     }
     
@@ -109,15 +109,15 @@ class SwipeTasksViewController: UITableViewController {
         let action = UIAlertAction(title: "Add Task", style: .default) { (action) in
             /////////////////////▷Completion Block
             
-            //Set new item object equal to custom item class context.
-            let newItem = Item(context: self.context)
-            //Set new item .title property equal to text field .text.
-            newItem.title = textField.text!
+//            //Set new item object equal to custom item class context.
+//            let newItem = Item(context: self.context)
+//            //Set new item .title property equal to text field .text.
+//            newItem.title = textField.text!
+//
+//            newItem.parentCategory = self.selectedCategory
+//            //Adds a new element at the end of the item array.
+//            self.itemArray.append(newItem)-------------------------------------------------------------#####Address it.
             
-            newItem.parentCategory = self.selectedCategory
-            
-            //Adds a new element at the end of the item array.
-            self.itemArray.append(newItem)
             //Call save item function.
             self.saveItems()
         }
@@ -151,24 +151,24 @@ class SwipeTasksViewController: UITableViewController {
         }
     
     
-    func loadItems (with request: NSFetchRequest<Item> = Item.fetchRequest( ), predicate: NSPredicate? = nil ) {
-        
-        let categoryPredicate = NSPredicate(format: "parentCategory.name MATCHES %@", selectedCategory!.name!)
-        
-        if let additionalPredicate = predicate {
-            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [categoryPredicate, additionalPredicate])
-        } else {
-            request.predicate = categoryPredicate
-        }
-        
-        ////CoreData-Context-CRUD-Read Methods.
-        do {
-          itemArray =  try context.fetch(request)
-        } catch {
-            print("ERROR FETCHING DATA FROM CONTEXT, \(error)")
-            }
-        tableView.reloadData()
-            }
+//    func loadItems (with request: NSFetchRequest<Item> = Item.fetchRequest( ), predicate: NSPredicate? = nil ) {
+//
+//        let categoryPredicate = NSPredicate(format: "parentCategory.name MATCHES %@", selectedCategory!.name!)
+//
+//        if let additionalPredicate = predicate {
+//            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [categoryPredicate, additionalPredicate])
+//        } else {
+//            request.predicate = categoryPredicate
+//        }
+//
+//        ////CoreData-Context-CRUD-Read Methods.
+//        do {
+//          itemArray =  try context.fetch(request)
+//        } catch {
+//            print("ERROR FETCHING DATA FROM CONTEXT, \(error)")
+//        }
+//        tableView.reloadData()
+//        }---------------------------------------------------------------------------------####Address it.
     }
 
 
@@ -177,27 +177,27 @@ class SwipeTasksViewController: UITableViewController {
     
 //MARK: - EXTENSION BLOCK WITH SEARCH BAR METHODS.
 ////---------------------------------------------------------------------------------------------------------------------------
-extension SwipeTasksViewController: UISearchBarDelegate {
-    
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        
-        let request: NSFetchRequest<Item> = Item.fetchRequest( )
-        
-        let predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
-        
-        request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
-        
-        loadItems(with: request, predicate: predicate)
-    }
-    
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if searchBar.text?.count == 0 {
-            loadItems()
-            
-            DispatchQueue.main.async {
-                searchBar.resignFirstResponder()
-            }
-        }
-    }
-}
+//extension SwipeTasksViewController: UISearchBarDelegate {
+//
+//    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+//
+//        let request: NSFetchRequest<Item> = Item.fetchRequest( )
+//
+//        let predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
+//
+//        request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
+//
+//        loadItems(with: request, predicate: predicate)
+//    }
+//
+//    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+//        if searchBar.text?.count == 0 {
+//            loadItems()
+//
+//            DispatchQueue.main.async {
+//                searchBar.resignFirstResponder()
+//            }
+//        }
+//    }
+//}-----------------------------------------------------------------------------------------####Address it.
 
