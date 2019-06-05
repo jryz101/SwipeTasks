@@ -5,25 +5,24 @@
 
 
 import UIKit
-import CoreData
+import RealmSwift
 
 class SwipeTasksViewController: UITableViewController {
     
-    //Item array.
-    var itemArray = [Item]( )
+    //Swipe tasks Items.
+    var swipeTasksItems: Results<Item>?
+    let realm = try! Realm( )
     
+    //Set selected category to optional data type Category.
     var selectedCategory : Category? {
         didSet {
-        //loadItems()-------------------###Address it.
+        //Call load items function.
+        loadItems()
         }
     }
     
    //An object that provides a convenient interface to the contents of the file system.
     let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Item.plist")
-    
-    ////CoreData-Context.
-    //Down cast uiApplication delegate to app delegate and tap into core data persisten container . view context.
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
    
     
@@ -49,25 +48,27 @@ class SwipeTasksViewController: UITableViewController {
     //Override table view function and tells the data source to return the number of rows in a given section of a table view.
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         //Return total number of elements in the item array.
-        return itemArray.count
+        return swipeTasksItems?.count ?? 1
     }
     //Override table view function and asks the table view data source for a cell to insert in a particular location of the table view screen.
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         //Returns a reusable table-view cell object for the specified reuse identifier and adds it to the table.
         let cell = tableView.dequeueReusableCell(withIdentifier: "SwipeTasksItemCell", for: indexPath)
         
-        //Set item object equal to item array index path .row.
-        let item = itemArray[indexPath.row]
-        
-        //Set cell text label equal to item array index path .row .title.
-        cell.textLabel?.text = item.title
-        
-        ////⭐️Ternary Operator
-        //Format: value = condition ? valueIfTrue : valueIfFalse
-        cell.accessoryType = item.done == true ? .checkmark : .none
-        
+        if let item = swipeTasksItems?[indexPath.row] {
+            
+            //Set cell text label equal to item array index path .row .title.
+            cell.textLabel?.text = item.title
+            ////⭐️Ternary Operator
+            //Format: value = condition ? valueIfTrue : valueIfFalse
+            cell.accessoryType = item.done == true ? .checkmark : .none
+        }else {
+            //Empty label.
+            cell.textLabel?.text = "No Item Added."
+        }
         //Return cell.
         return cell
+        
     }
 
     
@@ -84,9 +85,9 @@ class SwipeTasksViewController: UITableViewController {
         
         ////CoreData-Context-CRUD-Update Methods.
         //Set item array index path .row .done property to the opposite value.
-        itemArray[indexPath.row].done = !itemArray[indexPath.row].done
-        //Call save item function.
-        saveItems()
+//        swipeTasksItems[indexPath.row].done = !swipeTasksItems[indexPath.row].done
+//        //Call save item function.
+//        saveItems()-------------------------------------------###Address it
         
         //Table viewl deselects a given row identified by index path, with an option to animate the deselection.
         tableView.deselectRow(at: indexPath, animated: true)
@@ -107,19 +108,26 @@ class SwipeTasksViewController: UITableViewController {
         let alert = UIAlertController(title: "Add New Takss", message: "", preferredStyle: .alert)
         //Add an action that can be taken when the user taps a button in an alert.
         let action = UIAlertAction(title: "Add Task", style: .default) { (action) in
+            
             /////////////////////▷Completion Block
-            
-//            //Set new item object equal to custom item class context.
-//            let newItem = Item(context: self.context)
-//            //Set new item .title property equal to text field .text.
-//            newItem.title = textField.text!
-//
-//            newItem.parentCategory = self.selectedCategory
-//            //Adds a new element at the end of the item array.
-//            self.itemArray.append(newItem)-------------------------------------------------------------#####Address it.
-            
-            //Call save item function.
-            self.saveItems()
+            //Optional binding methods for saving category data to Realm database.
+            if let currentCategory = self.selectedCategory {
+                do {
+                //Performs actions contained within the given block inside a write transaction.
+                try self.realm.write {
+                //Set newItem property equals to Item and initialize it.
+                let newItem = Item( )
+                //Set new item title property equals to text field .text!.
+                newItem.title = textField.text!
+                //Appends the given object to the end of the list.
+                currentCategory.items.append(newItem)
+                    }
+                }catch{
+                    print("ERROR SAVING NEW ITEM, \(error)")
+                }
+            }
+                //Call table view reload data
+                self.tableView.reloadData( )
         }
         //Adds a text field to an alert.
         alert.addTextField { (alerttextField) in
@@ -139,36 +147,15 @@ class SwipeTasksViewController: UITableViewController {
     
 //MARK: - FUNCTION BLOCK.
 ////---------------------------------------------------------------------------------------------------------------------------
-    func saveItems ( ) {
-        ////CoreData-Context-CRUD-Create Methods.
-        do {
-           try context.save()
-        } catch {
-           print("ERROR SAVING CONTEXT, \(error)")
-        }
-        //Call table view reload data.
+
+//Load items function.
+func loadItems ( ) {
+        ////Realm-CRUD-Read
+        //Returns a Results containing the objects in the list, but sorted.
+        swipeTasksItems = selectedCategory?.items.sorted(byKeyPath: "title", ascending: true)
+        //Call load item.
         tableView.reloadData()
         }
-    
-    
-//    func loadItems (with request: NSFetchRequest<Item> = Item.fetchRequest( ), predicate: NSPredicate? = nil ) {
-//
-//        let categoryPredicate = NSPredicate(format: "parentCategory.name MATCHES %@", selectedCategory!.name!)
-//
-//        if let additionalPredicate = predicate {
-//            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [categoryPredicate, additionalPredicate])
-//        } else {
-//            request.predicate = categoryPredicate
-//        }
-//
-//        ////CoreData-Context-CRUD-Read Methods.
-//        do {
-//          itemArray =  try context.fetch(request)
-//        } catch {
-//            print("ERROR FETCHING DATA FROM CONTEXT, \(error)")
-//        }
-//        tableView.reloadData()
-//        }---------------------------------------------------------------------------------####Address it.
     }
 
 
