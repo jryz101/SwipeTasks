@@ -12,6 +12,12 @@ class SwipeTasksViewController: UITableViewController {
     //Item array.
     var itemArray = [Item]( )
     
+    var selectedCategory : Category? {
+        didSet {
+            loadItems()
+        }
+    }
+    
    //An object that provides a convenient interface to the contents of the file system.
     let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Item.plist")
     
@@ -28,9 +34,6 @@ class SwipeTasksViewController: UITableViewController {
         super.viewDidLoad()
         
         print(dataFilePath!)
-        
-        //Call load items function.
-        loadItems( )
         
     }
     
@@ -111,8 +114,7 @@ class SwipeTasksViewController: UITableViewController {
             //Set new item .title property equal to text field .text.
             newItem.title = textField.text!
             
-            //Set new item property equal to false.
-            newItem.done = false
+            newItem.parentCategory = self.selectedCategory
             
             //Adds a new element at the end of the item array.
             self.itemArray.append(newItem)
@@ -149,7 +151,16 @@ class SwipeTasksViewController: UITableViewController {
         }
     
     
-    func loadItems (with request: NSFetchRequest<Item> = Item.fetchRequest( ) ) {
+    func loadItems (with request: NSFetchRequest<Item> = Item.fetchRequest( ), predicate: NSPredicate? = nil ) {
+        
+        let categoryPredicate = NSPredicate(format: "parentCategory.name MATCHES %@", selectedCategory!.name!)
+        
+        if let additionalPredicate = predicate {
+            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [categoryPredicate, additionalPredicate])
+        } else {
+            request.predicate = categoryPredicate
+        }
+        
         ////CoreData-Context-CRUD-Read Methods.
         do {
           itemArray =  try context.fetch(request)
@@ -172,11 +183,11 @@ extension SwipeTasksViewController: UISearchBarDelegate {
         
         let request: NSFetchRequest<Item> = Item.fetchRequest( )
         
-        request.predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
+        let predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
         
         request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
         
-        loadItems(with: request)
+        loadItems(with: request, predicate: predicate)
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
