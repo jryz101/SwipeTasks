@@ -55,6 +55,7 @@ class SwipeTasksViewController: UITableViewController {
         //Returns a reusable table-view cell object for the specified reuse identifier and adds it to the table.
         let cell = tableView.dequeueReusableCell(withIdentifier: "SwipeTasksItemCell", for: indexPath)
         
+        //Optional binding methods for tackled the swipe tasks Items index path.
         if let item = swipeTasksItems?[indexPath.row] {
             
             //Set cell text label equal to item array index path .row .title.
@@ -128,6 +129,9 @@ class SwipeTasksViewController: UITableViewController {
                 let newItem = Item( )
                 //Set new item title property equals to text field .text!.
                 newItem.title = textField.text!
+                //Set new item .date created object equals to Date and initialize it.
+                newItem.dateCreated = Date( )
+                    
                 //Appends the given object to the end of the list.
                 currentCategory.items.append(newItem)
                     }
@@ -173,27 +177,24 @@ func loadItems ( ) {
     
 //MARK: - EXTENSION BLOCK WITH SEARCH BAR METHODS.
 ////---------------------------------------------------------------------------------------------------------------------------
-//extension SwipeTasksViewController: UISearchBarDelegate {
-//
-//    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-//
-//        let request: NSFetchRequest<Item> = Item.fetchRequest( )
-//
-//        let predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
-//
-//        request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
-//
-//        loadItems(with: request, predicate: predicate)
-//    }
-//
-//    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-//        if searchBar.text?.count == 0 {
-//            loadItems()
-//
-//            DispatchQueue.main.async {
-//                searchBar.resignFirstResponder()
-//            }
-//        }
-//    }
-//}-----------------------------------------------------------------------------------------####Address it.
+extension SwipeTasksViewController: UISearchBarDelegate {
+
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        //Returns a Results containing all objects matching the given predicate in the collection.
+        swipeTasksItems = swipeTasksItems?.filter("title CONTAINS[cd] %@", searchBar.text!).sorted(byKeyPath: "dateCreated", ascending: true)
+        //Call table view reload data.
+        tableView.reloadData()
+    
+    }
+
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchBar.text?.count == 0 {
+            loadItems()
+
+            DispatchQueue.main.async {
+                searchBar.resignFirstResponder()
+            }
+        }
+    }
+}
 
