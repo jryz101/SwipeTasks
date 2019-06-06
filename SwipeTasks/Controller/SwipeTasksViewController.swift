@@ -79,15 +79,23 @@ class SwipeTasksViewController: UITableViewController {
     //Override table view function and tells the delegate that the specified row is now selected.
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        ////CoreData-Context-CRUD-Delete Methods.
-        //context.delete(itemArray[indexPath.row])
-        //itemArray.remove(at: indexPath.row)
         
-        ////CoreData-Context-CRUD-Update Methods.
-        //Set item array index path .row .done property to the opposite value.
-//        swipeTasksItems[indexPath.row].done = !swipeTasksItems[indexPath.row].done
-//        //Call save item function.
-//        saveItems()-------------------------------------------###Address it
+        ////Realm-CRUD-Update.
+        if let item = swipeTasksItems? [indexPath.row] {
+            do {
+                try realm.write {
+                    
+                    ////Realm-CRUD-Delete.
+                    //realm.delete(item)
+                    
+                    item.done = !item.done
+                }
+            } catch {
+                print("ERROR SAVING DONE STATUS, \(error)")
+            }
+        }
+        //Call table view reload data.
+        tableView.reloadData()
         
         //Table viewl deselects a given row identified by index path, with an option to animate the deselection.
         tableView.deselectRow(at: indexPath, animated: true)
@@ -113,6 +121,7 @@ class SwipeTasksViewController: UITableViewController {
             //Optional binding methods for saving category data to Realm database.
             if let currentCategory = self.selectedCategory {
                 do {
+                ////Realm-CRUD-Create.
                 //Performs actions contained within the given block inside a write transaction.
                 try self.realm.write {
                 //Set newItem property equals to Item and initialize it.
