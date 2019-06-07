@@ -131,7 +131,6 @@ class SwipeTasksViewController: UITableViewController {
                 newItem.title = textField.text!
                 //Set new item .date created object equals to Date and initialize it.
                 newItem.dateCreated = Date( )
-                    
                 //Appends the given object to the end of the list.
                 currentCategory.items.append(newItem)
                     }
@@ -186,12 +185,13 @@ extension SwipeTasksViewController: UISearchBarDelegate {
         tableView.reloadData()
     
     }
-
+    //Tells the delegate that the user changed the search text.
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchBar.text?.count == 0 {
             loadItems()
-
+            //DispatchQueue manages the execution of work items. Each work item submitted to a queue is processed on a pool of threads managed by the system.
             DispatchQueue.main.async {
+                //Notifies this object that it has been asked to relinquish its status as first responder in its window.
                 searchBar.resignFirstResponder()
             }
         }

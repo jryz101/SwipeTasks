@@ -6,9 +6,12 @@
 
 import UIKit
 import RealmSwift
+import SwipeCellKit
+
 
 class CategoryViewController: UITableViewController {
     
+    ////REALM-2
     ////Create Realm Database.
     //A Realm instance (also referred to as “a Realm”) represents a Realm database.
     let realm = try! Realm( )
@@ -25,6 +28,9 @@ class CategoryViewController: UITableViewController {
         
         //Call load categories function.
         loadCategories( )
+        
+        //The height of each row (that is, table cell) in the table view.
+        tableView.rowHeight = 80.0
     }
     
     
@@ -35,32 +41,40 @@ class CategoryViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return categories?.count ?? 1
     }
-    
+    //Asks the data source for a cell to insert in a particular location of the table view.
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        //Returns a reusable table-view cell object for the specified reuse identifier and adds it to the table.
+        let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath) as! SwipeTableViewCell
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath)
+        cell.delegate = self
         
+        //Set cell text label object equals to categories index path .row . name.
         cell.textLabel?.text = categories?[indexPath.row].name ?? "No Categories Added Yet"
-        
+        //Return cell.
         return cell
     }
     
     
 //MARK: - TABLE VIEW DELEGATE METHODS.
 ////---------------------------------------------------------------------------------------------------------------------------
+    //Tells the delegate that the specified row is now selected.
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        //Initiates the segue with the specified identifier from the current view controller's storyboard file.
         performSegue(withIdentifier: "goToItems", sender: self)
     }
+    //Notifies the view controller that a segue is about to be performed.
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        //The destination view controller for the segue.
         let destinationVC = segue.destination as! SwipeTasksViewController
-        
+        //An index path identifying the row and section of the selected row.
         if let indexPath = tableView.indexPathForSelectedRow {
+            //Set destination VC .selected category object equals to categories index path .row.
             destinationVC.selectedCategory = categories?[indexPath.row]
         }
     }
     
     
-//MARK: - FUNCTION BLOCK.
+//MARK: - SAVE AND LOAD CATEGORIES FUNCTION BLOCK.
 ////---------------------------------------------------------------------------------------------------------------------------
     func save(category: Category ) {
         do {
@@ -91,11 +105,11 @@ class CategoryViewController: UITableViewController {
 //MARK: - ADD ITEM BUTTON FUNCTION.
 ////---------------------------------------------------------------------------------------------------------------------------
     @IBAction func addCategoryButton(_ sender: UIBarButtonItem) {
-        
+        //Set text field property equals to UI text field.
         var textField = UITextField( )
-        
+        //An object that displays an alert message to the user.
         let alert = UIAlertController(title: "Add New Category", message: "", preferredStyle: .alert)
-        
+        //An action that can be taken when the user taps a button in an alert.
         let action = UIAlertAction(title: "Add", style: .default) { (action) in
             
             /////////////////////▷Completion Block
@@ -103,8 +117,9 @@ class CategoryViewController: UITableViewController {
             newCategory.name = textField.text!
             self.save(category: newCategory)
         }
-        
+        //Attaches an action object to the alert or action sheet.
         alert.addAction(action)
+        //Adds a text field to an alert.
         alert.addTextField { (field) in
             textField = field
             textField.placeholder = "Add a new category"
@@ -112,6 +127,44 @@ class CategoryViewController: UITableViewController {
         present(alert, animated: true, completion: nil)
         }
     }
+
+//MARK: - SWIPE FUNCTIONALITY EXTENSION.
+extension CategoryViewController: SwipeTableViewCellDelegate {
+    //Asks the delegate for the actions to display in response to a swipe in the specified row.
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
+        //The right side of the cell.
+        guard orientation == .right else { return nil }
+        //The SwipeAction object defines a single action to present when the user swipes horizontally in a table/collection item.
+        let deleteAction = SwipeAction(style: .destructive, title: "Delete") { action, indexPath in
+            
+           
+            ////▷SWIPE COMPLETION HANDLE.
+            // handle action by updating model with deletion
+            
+            if let categoryForDeletion = self.categories?[indexPath.row] {
+                
+                do {
+                  try self.realm.write {
+                        self.realm.delete(categoryForDeletion)
+                    }
+                }catch {
+                    print("ERROR DELETING CATEGORY, \(error)")
+                }
+            }
+        }
+        
+        // customize the action appearance
+        deleteAction.image = UIImage(named: "delete-icon")
+        //Return delete action.
+        return [deleteAction]
+    }
+    
+    func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeOptions {
+        var options = SwipeOptions()
+        options.expansionStyle = .destructive
+        return options
+    }
+}
 
 
 

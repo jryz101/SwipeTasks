@@ -7,7 +7,7 @@
 import Foundation
 import RealmSwift
 
-//Create a Category class with 'Object', is a class used to define Realm model objects.
+//Create a custom Category class with 'Object', is a class used to define Realm model objects.
 class Category: Object {
     @objc dynamic var name: String = ""
     
