@@ -10,6 +10,7 @@
 		8A0038C122A7C5360053C1B7 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0038C022A7C5360053C1B7 /* Item.swift */; };
 		8A0038C322A7C5430053C1B7 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A0038C222A7C5430053C1B7 /* Category.swift */; };
 		8A3C85C122A5E5E700D624DA /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3C85C022A5E5E700D624DA /* CategoryViewController.swift */; };
+		8AB1B85122AACA3000EF6600 /* SwipeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB1B85022AACA3000EF6600 /* SwipeTableViewController.swift */; };
 		8AC70C4822A1C95D0031D3FC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC70C4722A1C95D0031D3FC /* AppDelegate.swift */; };
 		8AC70C4A22A1C95D0031D3FC /* SwipeTasksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC70C4922A1C95D0031D3FC /* SwipeTasksViewController.swift */; };
 		8AC70C4D22A1C95D0031D3FC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8AC70C4B22A1C95D0031D3FC /* Main.storyboard */; };
@@ -24,6 +25,7 @@
 		8A0038C022A7C5360053C1B7 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		8A0038C222A7C5430053C1B7 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		8A3C85C022A5E5E700D624DA /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
+		8AB1B85022AACA3000EF6600 /* SwipeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeTableViewController.swift; sourceTree = "<group>"; };
 		8AC70C4422A1C95D0031D3FC /* SwipeTasks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwipeTasks.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8AC70C4722A1C95D0031D3FC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8AC70C4922A1C95D0031D3FC /* SwipeTasksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeTasksViewController.swift; sourceTree = "<group>"; };
@@ -68,6 +70,7 @@
 			children = (
 				8A3C85C022A5E5E700D624DA /* CategoryViewController.swift */,
 				8AC70C4922A1C95D0031D3FC /* SwipeTasksViewController.swift */,
+				8AB1B85022AACA3000EF6600 /* SwipeTableViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -257,6 +260,7 @@
 				8A3C85C122A5E5E700D624DA /* CategoryViewController.swift in Sources */,
 				8AC70C4A22A1C95D0031D3FC /* SwipeTasksViewController.swift in Sources */,
 				8AC70C4822A1C95D0031D3FC /* AppDelegate.swift in Sources */,
+				8AB1B85122AACA3000EF6600 /* SwipeTableViewController.swift in Sources */,
 				8A0038C322A7C5430053C1B7 /* Category.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

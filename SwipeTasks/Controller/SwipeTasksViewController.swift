@@ -7,7 +7,7 @@
 import UIKit
 import RealmSwift
 
-class SwipeTasksViewController: UITableViewController {
+class SwipeTasksViewController: SwipeTableViewController {
     
     //Swipe tasks Items.
     var swipeTasksItems: Results<Item>?
@@ -52,9 +52,10 @@ class SwipeTasksViewController: UITableViewController {
     }
     //Override table view function and asks the table view data source for a cell to insert in a particular location of the table view screen.
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        //Returns a reusable table-view cell object for the specified reuse identifier and adds it to the table.
-        let cell = tableView.dequeueReusableCell(withIdentifier: "SwipeTasksItemCell", for: indexPath)
         
+        //Set cell constant property equals to super .table view cell for row at index path.
+        let cell = super.tableView(tableView, cellForRowAt: indexPath)
+    
         //Optional binding methods for tackled the swipe tasks Items index path.
         if let item = swipeTasksItems?[indexPath.row] {
             
@@ -89,6 +90,7 @@ class SwipeTasksViewController: UITableViewController {
                     ////Realm-CRUD-Delete.
                     //realm.delete(item)
                     
+                    //Set item .done property equals to the opposite value.
                     item.done = !item.done
                 }
             } catch {
@@ -165,12 +167,28 @@ func loadItems ( ) {
         ////Realm-CRUD-Read
         //Returns a Results containing the objects in the list, but sorted.
         swipeTasksItems = selectedCategory?.items.sorted(byKeyPath: "title", ascending: true)
-        //Call load item.
+        //Call table view reload data.
         tableView.reloadData()
         }
+    
+//MARK: - OVERRIDE UPDATE MODEL FUNCTIONALITY IN SWIPE TABLE VIEW CONTROLLER.
+override func updateModel(at indexPath: IndexPath) {
+    
+        //Optional binding methods for deleting data in realm data base.
+        if let item = swipeTasksItems?[indexPath.row]  {
+            
+            do {
+                //Performs actions contained within the given block inside a write transaction.
+                try realm.write {
+                    //Deletes an object from the Realm. Once the object is deleted it is considered invalidated.
+                    realm.delete(item)
+                }
+            }catch {
+                print("ERROR DELETING ITEM, \(error)")
+            }
+        }
     }
-
-
+}
 
 
     
@@ -197,4 +215,5 @@ extension SwipeTasksViewController: UISearchBarDelegate {
         }
     }
 }
+
 

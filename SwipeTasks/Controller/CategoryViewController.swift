@@ -6,10 +6,10 @@
 
 import UIKit
 import RealmSwift
-import SwipeCellKit
 
 
-class CategoryViewController: UITableViewController {
+
+class CategoryViewController: SwipeTableViewController {
     
     ////REALM-2
     ////Create Realm Database.
@@ -43,13 +43,12 @@ class CategoryViewController: UITableViewController {
     }
     //Asks the data source for a cell to insert in a particular location of the table view.
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        //Returns a reusable table-view cell object for the specified reuse identifier and adds it to the table.
-        let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath) as! SwipeTableViewCell
-        
-        cell.delegate = self
+       
+        let cell = super.tableView(tableView,  cellForRowAt: indexPath)
         
         //Set cell text label object equals to categories index path .row . name.
         cell.textLabel?.text = categories?[indexPath.row].name ?? "No Categories Added Yet"
+        
         //Return cell.
         return cell
     }
@@ -96,6 +95,23 @@ class CategoryViewController: UITableViewController {
             //Returns all objects of the given type stored in the Realm.
             categories = realm.objects(Category.self)
     }
+    
+    //MARK: - OVERRIDE UPDATE MODEL FUNCTIONALITY IN SWIPE TABLE VIEW CONTROLLER.
+    override func updateModel(at indexPath: IndexPath) {
+        
+            if let categoryForDeletion = self.categories?[indexPath.row] {
+        
+            do {
+                    //Performs actions contained within the given block inside a write transaction.
+                    try self.realm.write {
+                    //Deletes an object from the Realm. Once the object is deleted it is considered invalidated.
+                    self.realm.delete(categoryForDeletion)
+                }
+            }catch {
+                    print("ERROR DELETING CATEGORY, \(error)")
+            }
+        }
+    }
 
 
     
@@ -128,43 +144,6 @@ class CategoryViewController: UITableViewController {
         }
     }
 
-//MARK: - SWIPE FUNCTIONALITY EXTENSION.
-extension CategoryViewController: SwipeTableViewCellDelegate {
-    //Asks the delegate for the actions to display in response to a swipe in the specified row.
-    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
-        //The right side of the cell.
-        guard orientation == .right else { return nil }
-        //The SwipeAction object defines a single action to present when the user swipes horizontally in a table/collection item.
-        let deleteAction = SwipeAction(style: .destructive, title: "Delete") { action, indexPath in
-            
-           
-            ////▷SWIPE COMPLETION HANDLE.
-            // handle action by updating model with deletion
-            
-            if let categoryForDeletion = self.categories?[indexPath.row] {
-                
-                do {
-                  try self.realm.write {
-                        self.realm.delete(categoryForDeletion)
-                    }
-                }catch {
-                    print("ERROR DELETING CATEGORY, \(error)")
-                }
-            }
-        }
-        
-        // customize the action appearance
-        deleteAction.image = UIImage(named: "delete-icon")
-        //Return delete action.
-        return [deleteAction]
-    }
-    
-    func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeOptions {
-        var options = SwipeOptions()
-        options.expansionStyle = .destructive
-        return options
-    }
-}
 
 
 
