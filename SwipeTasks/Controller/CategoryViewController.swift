@@ -6,6 +6,7 @@
 
 import UIKit
 import RealmSwift
+import ChameleonFramework
 
 
 
@@ -31,6 +32,9 @@ class CategoryViewController: SwipeTableViewController {
         
         //The height of each row (that is, table cell) in the table view.
         tableView.rowHeight = 80.0
+        
+        //The style for table cells used as separators.
+        tableView.separatorStyle = .none
     }
     
     
@@ -43,11 +47,22 @@ class CategoryViewController: SwipeTableViewController {
     }
     //Asks the data source for a cell to insert in a particular location of the table view.
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-       
+       //Asks the data source for a cell to insert in a particular location of the table view.
         let cell = super.tableView(tableView,  cellForRowAt: indexPath)
         
+        //Optional binding methods.
+        if let category = categories?[indexPath.row] {
+        
         //Set cell text label object equals to categories index path .row . name.
-        cell.textLabel?.text = categories?[indexPath.row].name ?? "No Categories Added Yet"
+        cell.textLabel?.text = category.name
+        //An object that stores color data and sometimes opacity (alpha value).
+        guard let categoryColour = UIColor(hexString: category.colour) else {fatalError()}
+        //The view’s background color.
+        cell.backgroundColor = categoryColour
+        //Creates and returns either a black or white color object depending on which contrasts more with a specified color.
+        cell.textLabel?.textColor = ContrastColorOf(categoryColour, returnFlat: true)
+            
+        }
         
         //Return cell.
         return cell
@@ -131,6 +146,7 @@ class CategoryViewController: SwipeTableViewController {
             /////////////////////▷Completion Block
             let newCategory = Category( )
             newCategory.name = textField.text!
+            newCategory.colour = UIColor.randomFlat.hexValue( )
             self.save(category: newCategory)
         }
         //Attaches an action object to the alert or action sheet.
@@ -140,6 +156,7 @@ class CategoryViewController: SwipeTableViewController {
             textField = field
             textField.placeholder = "Add a new category"
         }
+        //Presents a view controller modally.
         present(alert, animated: true, completion: nil)
         }
     }

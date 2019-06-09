@@ -6,9 +6,13 @@
 
 import UIKit
 import RealmSwift
+import ChameleonFramework
 
 class SwipeTasksViewController: SwipeTableViewController {
     
+    @IBOutlet weak var searhBar: UISearchBar!
+    
+
     //Swipe tasks Items.
     var swipeTasksItems: Results<Item>?
     let realm = try! Realm( )
@@ -29,17 +33,49 @@ class SwipeTasksViewController: SwipeTableViewController {
     
 //MARK: - VIEW DID LOAD BLOCK.
 ////---------------------------------------------------------------------------------------------------------------------------
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewDidLoad( ) {
+        super.viewDidLoad( )
         
-        print(dataFilePath!)
+        //The style for table cells used as separators.
+        tableView.separatorStyle = .none
         
     }
     
-
-
     
+
+//MARK: - VIEW WILL APPEAR BLOCK.
+////---------------------------------------------------------------------------------------------------------------------------
+    //Notifies the view controller that its view is about to be added to a view hierarchy.
+    override func viewWillAppear(_ animated: Bool)  {
+        //Set title equals to selected category .name.
+        title = selectedCategory?.name
+       
+        //
+        guard let colourHex = selectedCategory?.colour  else { fatalError( ) }
+        
+        updatenavBar(withHexCode: colourHex)
+            
+    }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        
+        updatenavBar(withHexCode: "FFFFFF")
+
+    }
+    
+    //MARK: - NAV BAR SETUP METHODS
+    func updatenavBar(withHexCode colourHexCode: String) {
+        
+        //Customised nav bar, title, search bar, and cell colour property.
+        guard let navBar = navigationController?.navigationBar else { fatalError("NAVIGATION CONTROLLER DOES NOT EXIST.")}
+        guard let navBarColour = UIColor(hexString: colourHexCode) else {fatalError( )}
+        navBar.barTintColor = navBarColour
+        navBar.tintColor = ContrastColorOf(navBarColour,  returnFlat: true)
+        navBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor : ContrastColorOf(navBarColour, returnFlat: true)]
+        searhBar.barTintColor = navBarColour
+        
+    }
+
     
     
     
@@ -61,6 +97,17 @@ class SwipeTasksViewController: SwipeTableViewController {
             
             //Set cell text label equal to item array index path .row .title.
             cell.textLabel?.text = item.title
+            
+            //Optional binding methods for an object that stores color data and sometimes opacity (alpha value).
+            if let colour = UIColor(hexString: selectedCategory!.colour)?.darken(byPercentage: CGFloat(indexPath.row) / CGFloat(swipeTasksItems!.count))  {
+                
+            //Set cell .background colour equals to colour.
+            cell.backgroundColor = colour
+            //Creates and returns either a black or white color object depending on which contrasts more with a specified color.
+            cell.textLabel?.textColor = ContrastColorOf(colour, returnFlat: true)
+                
+            }
+            
             ////⭐️Ternary Operator
             //Format: value = condition ? valueIfTrue : valueIfFalse
             cell.accessoryType = item.done == true ? .checkmark : .none

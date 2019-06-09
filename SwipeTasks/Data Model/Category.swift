@@ -10,6 +10,7 @@ import RealmSwift
 //Create a custom Category class with 'Object', is a class used to define Realm model objects.
 class Category: Object {
     @objc dynamic var name: String = ""
+    @objc dynamic var colour: String = ""
     
     //List is the container type in Realm used to define to-many relationships.
     let items = List<Item>( )

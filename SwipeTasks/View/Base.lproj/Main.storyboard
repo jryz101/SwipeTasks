@@ -81,12 +81,14 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="SwipeTasks" prompt="Items" id="cgH-8z-bOB">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="mIC-O6-jZx">
-                            <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <connections>
                                 <action selector="addItemButton:" destination="0Vb-YJ-dzX" id="1LZ-Ln-aDF"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="searhBar" destination="ZFi-HH-6E1" id="FVg-22-I6I"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="C76-1v-uIQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
